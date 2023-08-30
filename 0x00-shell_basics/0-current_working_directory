@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Absolut path: $(pwd)"
+echo "$(pwd)"
