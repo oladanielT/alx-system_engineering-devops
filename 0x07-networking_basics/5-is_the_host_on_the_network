@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
-if [$# -eq 0]; then
+# a bash script that pings an IP address
+#Requirements:
+#Accept a string as argument
+#Display usage
+#if no argument passes
+#ping the IP address
+
+if [ $# -eq 0 ]; then
 	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
 	exit
-elif [$# -gt 1]; then
+elif [ $# -gt 1 ]; then
 	echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
 	exit
 else
