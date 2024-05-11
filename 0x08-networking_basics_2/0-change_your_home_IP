@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Backup original hosts file
+# Update /etc/hosts file to configure hostname resolutions
+# Restarting networking service to apply changes
 
 sudo cp /etc/hosts /etc/hosts.backup
 sudo sed -i 's/127\.0\.0\.1\slocalhost/127.0.0.2 localhost/' /etc/hosts
