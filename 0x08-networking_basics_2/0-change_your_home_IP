@@ -1,17 +1,15 @@
 #!/bin/bash
-
 # Backup original hosts file
+
 sudo cp /etc/hosts /etc/hosts.backup
 
 # Update /etc/hosts file to configure hostname resolutions
+
 sudo sed -i 's/127\.0\.0\.1\slocalhost/127.0.0.2 localhost/' /etc/hosts
 sudo sed -i 's/157\.240\.11\.35\sfacebook\.com/8.8.8.8 facebook.com/' /etc/hosts
 
 # Restarting networking service to apply changes
+
 sudo systemctl restart networking
 
 echo "Hosts file updated successfully!"
-
-# To revert the changes, use the following command:
-# sudo cp /etc/hosts.backup /etc/hosts && sudo systemctl restart networking
-
