@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Define the port to listen on
+# Start listening on the specified port
+# Listen on port and redirect input to a temporary file
+# Display the contents of the temporary file
+# Remove the temporary file
+
+port=98
+while true; do
+	echo "Waiting for connection..."
+	sudo nc -l localhost $port < /tmp/port_98_input.txt
+	echo "Connection received:"
+	cat /tmp/port_98_input.txt
+	rm /tmp/port_98_input.txt
+done
