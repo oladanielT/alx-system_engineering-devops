@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Retrieve active IPv4 addresses using ifconfig
+# Display the active IPv4 addresses
+
+ipv4_addresses=$(ifconfig | grep -oE 'inet (addr:)?([0-9]*\.){3}[0-9]*' | awk '{print $2}' | grep -v '127.0.0.1')
+echo "$ipv4_addresses"
