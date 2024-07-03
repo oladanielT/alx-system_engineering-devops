@@ -1,32 +1,31 @@
 #!/usr/bin/env bash
 #Bash script that configures a new Ubuntu machine 
 echo -e "Updating and installing Nginx"
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
 sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
 
-echo "Hello World!" > /var/www/html/index.html
-server_config = "/etc/nginx/sites-available/default"
+echo "Hello World!" > /var/www/html/index.html;
+server_config="/etc/nginx/sites-available/default"
 
-cat <<EOF> "$server_config"
+sudo bash -c "cat <<EOF> $server_config
 
 server {
 	listen 80;
 	listen [::]:80;
 
 	server_name _;
-
+	root /var/www/html;
 	location / {
-		root /var/www/html;
 		index index.html;
 	}
 }
-EOF
+EOF"
 
-kill -s HUP $(pidof nginx)
+sudo service nginx restart
 
-echo "Nginx installed and configured successfully!"
+echo -e "Nginx installed and configured successfully!"
