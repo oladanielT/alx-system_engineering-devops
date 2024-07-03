@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 #Bash script that configures a new Ubuntu machine 
+
 apt-get update
 apt-get install -y nginx
 echo "Hello World!" > /var/www/html/index.html
 service nginx start
+
+
+ser_config = "/etc/nginx/sites-available/default"
+
+cat <<EOF> "ser_config"
+
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name _;
+
+	location / {
+		root /var/www/html;
+		index index.html;
+	}
+}
+EOF
+
+kill -s HUP $(pidof nginx)
+
+echo "Nginx installed and configured successfully!"
