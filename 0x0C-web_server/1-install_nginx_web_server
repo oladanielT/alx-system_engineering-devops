@@ -7,9 +7,9 @@ echo "Hello World!" > /var/www/html/index.html
 service nginx start
 
 
-ser_config = "/etc/nginx/sites-available/default"
+server_config = "/etc/nginx/sites-available/default"
 
-cat <<EOF> "ser_config"
+cat <<EOF> "$server_config"
 
 server {
 	listen 80;
