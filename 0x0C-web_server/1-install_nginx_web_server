@@ -1,31 +1,32 @@
 #!/usr/bin/env bash
-#Bash script that configures a new Ubuntu machine 
-echo -e "Updating and installing Nginx"
-sudo apt-get update
-sudo apt-get install -y nginx
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World string
+#
 
+echo -e "Updating and installing Nginx.\n"
+sudo apt-get update -y -qq && \
+	 sudo apt-get install nginx -y
+
+echo -e "\nSetting up some minor stuff.\n"
+
+# starting nginx service
 sudo service nginx start
+
+# allowing nginx on firewall
 sudo ufw allow 'Nginx HTTP'
+
+# Give the user ownership to website files for easy editing
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
 
-echo "Hello World!" > /var/www/html/index.html;
-server_config="/etc/nginx/sites-available/default"
+# Backup default index
+cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
-sudo bash -c "cat <<EOF> $server_config
+# Creating new index
+echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
 
-server {
-	listen 80;
-	listen [::]:80;
-
-	server_name _;
-	root /var/www/html;
-	location / {
-		index index.html;
-	}
-}
-EOF"
-
+# Restarting nginx
 sudo service nginx restart
 
-echo -e "Nginx installed and configured successfully!"
+echo -e "\nCompleted. ✅\n"
