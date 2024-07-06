@@ -9,7 +9,7 @@ apt-get update
 # installs the Nginx web server.
 apt-get install -y nginx
 
-sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'nginx HTTP'
 sh -c 'echo "Hello World!" > /var/www/html/index.html'
-sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/@danbyte permanent;' /etc/nginx/sites-available/default
+sed -i 'listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/@danbyte permanent;' /etc/nginx/sites-available/default
 service nginx restart
