@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Installs Nginx with the following configurations:
+#+    Listens on port 80.
+#  updates the package lists for available software packages.
+apt-get update
+# installs the Nginx web server.
+apt-get install -y nginx
+sudo ufw allow 'Nginx HTTP'
+mkdir /etc/nginx/html
+sh -c 'echo "Hello World!" > /var/www/html/index.html'
+sed -i "/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/@danbyte permanent;" /etc/nginx/sites-available/default
+sed -i "/listen 80 default_server/a error_page 404 /404.html;" /etc/nginx/sites-available/default
+sed -i "/add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
+service nginx restart
