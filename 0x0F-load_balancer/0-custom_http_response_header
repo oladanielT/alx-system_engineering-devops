@@ -1,35 +1,27 @@
 #!/usr/bin/env bash
+#Install nginx web server
+sudo apt-get update && sudo apt-get install nginx
 
-apt-get -y update
-apt-get install -y nginx
-
+# Start nginx service
 sudo service nginx start
 
-# Add custom response header to know the server name for debugging
-HOST_NAME=$(hostname)
-HEADER="\\\n\tadd_header X-Served-By $HOST_NAME;\n"
-FIND=$(grep "X-Served-By" /etc/nginx/sites-available/default)
-if [ -z "$FIND" ]; then
-    sed -i "23i $HEADER" /etc/nginx/sites-available/default
-fi
-
-# Create a first index.html page
+# Create index.html with "Hello World!"
+sudo touch /var/www/html/index.html
+sudo chmod 666 /var/www/html/index.html
 echo "Hello World!" > /var/www/html/index.html
 
-# Add to the nginx configuration file a redirection to another page
-FIND=$(grep "location /redirect_me" /etc/nginx/sites-available/default)
-STRING="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;\n\t}\n"
-if [ -z "$FIND" ]; then
-    sed -i "42i $STRING" /etc/nginx/sites-available/default
-fi
+# Update Nginx configuration to add redirection
+sudo sed -i '/^}$/i \ \n\trewrite ^/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
 
-# Add to the nginx configuration file an error page 404
-FIND=$(grep "error_page 404" /etc/nginx/sites-available/default)
-ERROR="\\\n\terror_page 404 /custom_404.html;\n"
-if [ -z "$FIND" ]; then
-    echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
-    sed -i "40i $ERROR" /etc/nginx/sites-available/default
-fi
+# Create custom 404 error page
+sudo touch /var/www/html/404.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
-# Restart nginx service
+# Update Nginx configuration to use custom 404 error page
+sudo sed -i '/^}$/i \ \n\terror_page 404 /404.html;\n\n\tlocation /404.html {\n\t\tinternal;\n\t}' /etc/nginx/sites-available/default
+
+# Test Nginx configuration for syntax errors
+sudo nginx -t
+
+# Restart Nginx to apply changes
 service nginx restart
