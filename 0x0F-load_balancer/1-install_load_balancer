@@ -13,3 +13,5 @@ backend danbyte.tech_backend
 	server 524640-web-01 18.210.20.62:80 check
 	server 524640-web-02 54.152.10.203:456 check
 ' >> /etc/haproxy/haproxy.cfg
+
+service haproxy restart

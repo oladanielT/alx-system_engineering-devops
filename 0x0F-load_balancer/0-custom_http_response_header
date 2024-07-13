@@ -1,44 +1,30 @@
-#!/usr/bin/env bash
-#Install nginx web server
-sudo apt-get update && sudo apt-get install nginx
+#!/bin/bash
 
-# Start nginx service
-sudo service nginx start
+# Add custom response header to know the server name for debugging
+HOST_NAME=$(hostname)
+HEADER="\\\n\tadd_header X-Served-By $HOST_NAME;\n"
+FIND=$(grep "X-Served-By" /etc/nginx/sites-available/default)
+if [ -z "$FIND" ]; then
+    sed -i "23i $HEADER" /etc/nginx/sites-available/default
+fi
 
-# Create index.html with "Hello World!"
-sudo touch /var/www/html/index.html
-sudo chmod 666 /var/www/html/index.html
+# Create a first index.html page
 echo "Hello World!" > /var/www/html/index.html
 
-# Create custom 404 error page
-sudo touch /var/www/html/404.html
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+# Add to the nginx configuration file a redirection to another page
+FIND=$(grep "location /redirect_me" /etc/nginx/sites-available/default)
+STRING="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;\n\t}\n"
+if [ -z "$FIND" ]; then
+    sed -i "42i $STRING" /etc/nginx/sites-available/default
+fi
 
-# Update Nginx configuration
+# Add to the nginx configuration file an error page 404
+FIND=$(grep "error_page 404" /etc/nginx/sites-available/default)
+ERROR="\\\n\terror_page 404 /custom_404.html;\n"
+if [ -z "$FIND" ]; then
+    echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+    sed -i "40i $ERROR" /etc/nginx/sites-available/default
+fi
 
-printf %s "server {
-	listen 80;
-	listen [::]:80 default_server;
-	add_header X-Served-By "$HOSTNAME";
-
-	root /etc/nginx/html;
-	index index.html index.htm;
-
-	location /redirect_me {
-	return 301 http://www.youtube.com/;
-	}
-
-	error_page 404 /404.html;
-	location /404 {
-		root /etc/nginx/html;
-		internal;
-	}
-
-}" > /etc/nginx/sites-available/default
-
-
-# Test Nginx configuration for syntax errors
-sudo nginx -t
-
-# Restart Nginx to apply changes
+# Restart nginx service
 service nginx restart
