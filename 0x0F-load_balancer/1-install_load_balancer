@@ -3,15 +3,20 @@
 sudo apt-get update
 sudo apt-get install haproxy -y
 
-echo '
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+cat <<EOT | sudo tee -a /etc/haproxy/haproxy.cfg
 frontend danbyte.tech
+	timeout client 30000
 	bind 0:80
 	default_backend danbyte.tech_backend
 
 backend danbyte.tech_backend
+	timeout connect 3000
+	timeout server 30000
 	balance roundrobin
 	server 524640-web-01 18.210.20.62:80 check
 	server 524640-web-02 54.152.10.203:456 check
-' >> /etc/haproxy/haproxy.cfg
+EOT
 
-service haproxy restart
+sudo service haproxy restart
