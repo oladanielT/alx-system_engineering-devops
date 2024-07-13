@@ -10,6 +10,9 @@ sudo touch /var/www/html/index.html
 sudo chmod 666 /var/www/html/index.html
 echo "Hello World!" > /var/www/html/index.html
 
+#update Nginx header.
+sudo sed -i '/^}$/i \\n\tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-available/default
+
 # Update Nginx configuration to add redirection
 sudo sed -i '/^}$/i \ \n\trewrite ^/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
 
