@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#Install and configure HAproxy on your lb-01 server.
+sudo apt-get update
+sudo apt-get install haproxy -y
+
+echo '
+frontend danbyte.tech
+	bind 0:80
+	default_backend danbyte.tech_backend
+
+backend danbyte.tech_backend
+	balance roundrobin
+	server 524640-web-01 18.210.20.62:80 check
+	server 524640-web-02 54.152.10.203:456 check
+' >> /etc/haproxy/haproxy.cfg
