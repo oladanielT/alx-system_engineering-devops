@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+apt-get -y update
+apt-get install -y nginx
+
+sudo service nginx start
 
 # Add custom response header to know the server name for debugging
 HOST_NAME=$(hostname)
