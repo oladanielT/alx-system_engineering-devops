@@ -39,7 +39,7 @@ defaults
 frontend danbyte.tech
 	bind *:80
 	bind *:443 ssl crt /etc/letsencrypt/live/www.danbyte.tech/danbyte.pem
-	mode http
+	http-request redirect scheme https unless { ssl_fc }
 	default_backend danbyte.tech_backend
 
 backend danbyte.tech_backend
