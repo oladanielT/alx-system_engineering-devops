@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 #Bash script to fit nginx
-sudo cat /etc/nginx/sites-available/default > /etc/nginx/sites-enabled/default
-sudo service nginx restart
+cat /etc/nginx/sites-available/default > /etc/nginx/sites-enabled/default
+sudo service nginx start
 rm /run/nginx/pid
