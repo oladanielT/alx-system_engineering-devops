@@ -1,5 +1,1 @@
-#!/usr/bin/env bash
-#Bash script to fit nginx
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo service nginx start
-rm /run/nginx/pid
+
