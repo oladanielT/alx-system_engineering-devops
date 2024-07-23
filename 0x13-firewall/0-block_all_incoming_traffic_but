@@ -1,9 +1,10 @@
 #install ufw firewall
-sudo apt update
-sudo apt install ufw
+sudo apt-get update
+sudo apt-get install -y ufw
 
 #denies all incoming traffics.
 sudo ufw default deny incoming
+sudo ufw default allow ongoing
 
 #allow specific tcp
 sudo ufw allow 22/tcp
