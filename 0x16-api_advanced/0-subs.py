@@ -10,16 +10,11 @@ def number_of_subscribers(subreddit):
     Return the number of subscribers for a given subreddit.
     If the subreddit does not exist, return 0.
     """
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    try:
-        response = requests.get(url, headers=headers, allow_redirects=False)
-        if response.status_code == 200:
-            data = response.json()
-            # Correctly check for keys in the JSON response
-            if 'data' in data and 'subscribers' in data['data']:
-                return data['data']['subscribers']
+    headers = {"User-Agent": "Mozilla/3.0.0/10"}
+    sub_url = requests.get('https://www.reddit.com/r/{}/about.json'
+                           .format(subreddit),
+                           headers=headers, allow_redirects=False)
+    sub = sub_url.json()
+    if sub_url.status_code != 200:
         return 0
-    except requests.exceptions.RequestException:
-        # Return 0 if there's a request error
-        return 0
+    return sub.get('data').get('subscribers')
