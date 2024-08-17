@@ -1,11 +1,11 @@
-![Resolutional](resolution.jpeg)
+![Resolutional](./resolution.jpeg)
 
 
-#Postmortem: Service Outage on AirBnB Clone Platform
+# Postmortem: Service Outage on AirBnB Clone Platform
 
 ---
 
-##Issue Summary
+## Issue Summary
 
 Duration: 14:00 - 16:30 UTC (2 hours 30 minutes)
 
@@ -14,7 +14,7 @@ Root Cause: A configuration error in the Flask application server, particularly 
 
 ---
 
-##Timeline
+## Timeline
 
 * 14:00 UTC: Issue detected by an ALX monitoring alert, which flagged multiple failed API requests.
 * 14:05 UTC: The issue escalated to me, and I began investigating the application logs on port 5001.
@@ -28,7 +28,7 @@ Root Cause: A configuration error in the Flask application server, particularly 
 
 ---
 
-##Root Cause and Resolution
+## Root Cause and Resolution
 
 The root cause of the outage was a misconfiguration in the Flask application server setup. The development environment was set to run on port 5000 by default, but the production environment was intended to run on port 5001. This misalignment led to the server being unreachable on the expected port, causing the site and API endpoints to be unresponsive.
 
@@ -36,7 +36,7 @@ To resolve the issue, I reconfigured the Flask application to correctly bind to 
 
 ---
 
-##Corrective and Preventative Measures
+## Corrective and Preventative Measures
 
 To prevent a recurrence of this issue, the following measures will be implemented:
 1. Update Flask Configuration: Ensure that environment-specific configurations are clearly defined and correctly applied during deployment.
@@ -46,7 +46,7 @@ To prevent a recurrence of this issue, the following measures will be implemente
 
 ---
 
-##TODO
+## TODO
 
 * Patch the Flask configuration files to enforce correct port settings across environments.
 * Add monitoring on all production servers for port availability and responsiveness.
